@@ -9,19 +9,27 @@ public class Main {
 
             URL url = new URL("http://example.org");
 
-//            BufferedReader inputStream = new BufferedReader(
-//                    new InputStreamReader(url.openStream())
-//            );
-//
-//            String line = "";
-//            while(line != null){
-//                line = inputStream.readLine();
-//                System.out.println(line);
-//            }
-//            inputStream.close();
 
-            URLConnection urlConnection = url.openConnection();
+            URLConnection urlConnection = url.openConnection(); // BY default you can only read from a connection
+            urlConnection.setDoOutput(true);    // Enable output
             urlConnection.connect();
+
+
+            BufferedReader inputStream = new BufferedReader(
+                    new InputStreamReader(
+                            urlConnection.getInputStream()
+//                            url.openStream()
+                    )
+            );
+
+            String line = "";
+            while(line != null){
+                line = inputStream.readLine();
+                System.out.println(line);
+            }
+            inputStream.close();
+
+
 
 
 
