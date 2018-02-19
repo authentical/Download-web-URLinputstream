@@ -2,6 +2,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.*;
+import java.util.List;
+import java.util.Map;
 
 public class Main {
     public static void main(String[] args) {
@@ -22,12 +24,25 @@ public class Main {
                     )
             );
 
-            String line = "";
-            while(line != null){
-                line = inputStream.readLine();
-                System.out.println(line);
+            Map<String,List<String>> headerFields = urlConnection.getHeaderFields();
+            for(Map.Entry<String, List<String>> mapEntry : headerFields.entrySet()){
+
+                String key = mapEntry.getKey();
+                List<String> value = mapEntry.getValue();
+                System.out.println("-------key = "  +  key);
+
+                System.out.println("value = "+ value);
+
+
             }
-            inputStream.close();
+
+
+//            String line = "";
+//            while(line != null){
+//                line = inputStream.readLine();
+//                System.out.println(line);
+//            }
+//            inputStream.close();
 
 
 
