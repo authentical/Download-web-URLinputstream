@@ -11,38 +11,53 @@ public class Main {
 
             URL url = new URL("http://example.org");
 
+//            // URL Connection is a GENERIC connection class
+//            // so you may as well use HttpURLConnection class
+//            URLConnection urlConnection = url.openConnection(); // BY default you can only read from a connection
+//            urlConnection.setDoOutput(true);    // Enable output
+//            urlConnection.connect();
 
-            URLConnection urlConnection = url.openConnection(); // BY default you can only read from a connection
-            urlConnection.setDoOutput(true);    // Enable output
-            urlConnection.connect();
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("GET"); // Redundent here but provided for clarity
+            connection.setRequestProperty("User-Agent", "Chrome");
 
+            connection.setReadTimeout(20000);
+
+            int responseCode = connection.getResponseCode();
+            System.out.println("Response code: " + responseCode);
+
+            if(responseCode!=200){
+                System.out.println("Error reading web page");
+                return;
+            }
 
             BufferedReader inputStream = new BufferedReader(
                     new InputStreamReader(
-                            urlConnection.getInputStream()
+                            connection.getInputStream()
+//                            urlConnection.getInputStream()
 //                            url.openStream()
                     )
             );
 
-            Map<String,List<String>> headerFields = urlConnection.getHeaderFields();
-            for(Map.Entry<String, List<String>> mapEntry : headerFields.entrySet()){
-
-                String key = mapEntry.getKey();
-                List<String> value = mapEntry.getValue();
-                System.out.println("-------key = "  +  key);
-
-                System.out.println("value = "+ value);
-
-
-            }
-
-
-//            String line = "";
-//            while(line != null){
-//                line = inputStream.readLine();
-//                System.out.println(line);
+//            Map<String,List<String>> headerFields = /*urlConnection.*/connection.getHeaderFields();
+//            for(Map.Entry<String, List<String>> mapEntry : headerFields.entrySet()){
+//
+//                String key = mapEntry.getKey();
+//                List<String> value = mapEntry.getValue();
+//                System.out.println("-------key = "  +  key);
+//
+//                System.out.println("value = "+ value);
+//
+//
 //            }
-//            inputStream.close();
+
+
+            String line = "";
+            while((line = inputStream.readLine())!= null){
+//                line = inputStream.readLine();
+                System.out.println(line);
+            }
+            inputStream.close();
 
 
 
